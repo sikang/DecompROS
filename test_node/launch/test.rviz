@@ -6,9 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /PointCloud21
-        - /MarkerArray1
-        - /Path1
+        - /Ellipsoids1
+        - /Polyhedra1
       Splitter Ratio: 0.5
     Tree Height: 775
   - Class: rviz/Selection
@@ -37,7 +36,7 @@ Visualization Manager:
       Cell Size: 1
       Class: rviz/Grid
       Color: 160; 160; 164
-      Enabled: true
+      Enabled: false
       Line Style:
         Line Width: 0.0299999993
         Value: Lines
@@ -50,7 +49,7 @@ Visualization Manager:
       Plane: XY
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -63,7 +62,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -80,7 +79,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /test_decomp/markers
@@ -112,6 +111,28 @@ Visualization Manager:
       Topic: /test_decomp/path
       Unreliable: false
       Value: true
+    - Alpha: 0.5
+      Class: decomp_rviz_plugins/Ellipsoids
+      Color: 204; 51; 204
+      Enabled: true
+      History Length: 1
+      Name: Ellipsoids
+      Topic: /test_decomp/ellipsoids
+      Unreliable: false
+      Value: true
+    - Alpha: 0.200000003
+      BoundColor: 255; 0; 0
+      Class: decomp_rviz_plugins/Polyhedra
+      Enabled: true
+      MeshColor: 0; 170; 255
+      Name: Polyhedra
+      Scale: 0.100000001
+      State: Mesh
+      Topic: /test_decomp/polyhedra
+      Unreliable: false
+      Value: true
+      VsColor: 0; 255; 0
+      VsScale: 1
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -136,24 +157,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 36.664238
+      Distance: 19.9943504
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -1.20049381
-        Y: 0.0428423136
-        Z: -0.553272545
+        X: 3.27524352
+        Y: -5.38006544
+        Z: 1.79969811
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.769796968
+      Pitch: 0.659797192
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.930407584
+      Yaw: 3.86044979
     Saved: ~
 Window Geometry:
   Displays:
