@@ -59,6 +59,7 @@ int main(int argc, char ** argv){
   poly_pub.publish(poly_msg);
 
 
+  /*
   vec_LinearConstraint3f cs = decomp_util.get_constraints();
   for(int i = 0; i < cs.size(); i++) {
     MatD3f A = cs[i].first;
@@ -67,13 +68,8 @@ int main(int argc, char ** argv){
     printf("i: %d\n", i);
     std::cout << "start: " << (A*path[i]-b).transpose() << std::endl;
     std::cout << "end: " << (A*path[i+1]-b).transpose() << std::endl;
-
-    /*
-    std::cout << A.row(0) << std::endl;
-    std::cout << b.row(0) << std::endl;
-    std::cout << path[0].transpose() << std::endl;
-    */
   }
+  */
 
 
   ros::spin();
