@@ -5,8 +5,8 @@
     output="screen">
     <param name="bag_file" value="$(find test_node)/data/iss_obs.bag"/>
     <param name="bag_topic" value="/obs_points"/>
+    <param name="bag_marker" value="/mob/mapper/zones"/>
     <param name="path_file" value="$(find test_node)/data/path.txt"/>
-    <!--<param name="topic" value="/mob/mapper/zones"/>-->
   </node>
 
 </launch>

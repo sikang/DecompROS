@@ -19,39 +19,45 @@ int main(int argc, char ** argv){
   ros::Publisher poly_pub = nh.advertise<decomp_ros_msgs::Polyhedra>("polyhedra", 1, true);
 
   header_.frame_id = std::string("map");
-  std::string file_name, topic_name, path_file;
+  std::string file_name, topic_name, marker_name, path_file;
 
   nh.param("path_file", path_file, std::string("path.txt"));
   nh.param("bag_file", file_name, std::string("voxel_map"));
   nh.param("bag_topic", topic_name, std::string("voxel_map"));
+  nh.param("bag_marker", marker_name, std::string("voxel_map"));
+  //Read the point cloud from bag
   sensor_msgs::PointCloud2 map = read_point_cloud2(file_name, topic_name);
   map.header = header_;
   map_pub.publish(map);
 
+  //Convert into vector of Eigen
   sensor_msgs::PointCloud cloud;
   sensor_msgs::convertPointCloud2ToPointCloud(map, cloud);
   vec_Vec3f obs = cloud_to_vec(cloud);
 
-  /*
-  visualization_msgs::MarkerArray markers = read_marker_array(file_name, topic_name);
+  visualization_msgs::MarkerArray markers = read_marker_array(file_name, marker_name);
   for(auto & it: markers.markers)
     it.header = header_;
   marker_pub.publish(markers);
-  */
+
+  //Read path from txt
   vec_Vec3f path;
   if(!read_path(path_file, path))
     ROS_ERROR("Fail to read a path!");
 
+  //Downsample the path as many line segments with lenght equal to 1.0
   path = path_downsample(path, 1.0);
 
   nav_msgs::Path path_msg = eigen_to_path(path);
   path_msg.header = header_;
   path_pub.publish(path_msg);
 
+  //Using iterative decomposition
   IterativeDecomp decomp_util(true);
   decomp_util.set_obstacles(obs);
-  decomp_util.decomp_iter(path, 10, true);
+  decomp_util.decomp_iter(path, 10, true); //Set max iteration number of 10, do fix the path
 
+  //Publish visualization msgs
   decomp_ros_msgs::Ellipsoids es_msg = ellipsoids_to_ros(decomp_util.get_ellipsoids());
   es_msg.header = header_;
   es_pub.publish(es_msg);
