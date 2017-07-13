@@ -33,7 +33,7 @@ int main(int argc, char ** argv){
   //Convert into vector of Eigen
   sensor_msgs::PointCloud cloud;
   sensor_msgs::convertPointCloud2ToPointCloud(map, cloud);
-  vec_Vec3f obs = cloud_to_vec(cloud);
+  vec_Vec3f obs = DecompROS::cloud_to_vec(cloud);
 
   visualization_msgs::MarkerArray markers = read_marker_array(file_name, marker_name);
   for(auto & it: markers.markers)
@@ -48,7 +48,7 @@ int main(int argc, char ** argv){
   //Downsample the path as many line segments with lenght equal to 1.0
   path = path_downsample(path, 1.0);
 
-  nav_msgs::Path path_msg = eigen_to_path(path);
+  nav_msgs::Path path_msg = DecompROS::eigen_to_path(path);
   path_msg.header = header_;
   path_pub.publish(path_msg);
 
@@ -58,11 +58,11 @@ int main(int argc, char ** argv){
   decomp_util.decomp_iter(path, 10, true); //Set max iteration number of 10, do fix the path
 
   //Publish visualization msgs
-  decomp_ros_msgs::Ellipsoids es_msg = ellipsoids_to_ros(decomp_util.get_ellipsoids());
+  decomp_ros_msgs::Ellipsoids es_msg = DecompROS::ellipsoids_to_ros(decomp_util.get_ellipsoids());
   es_msg.header = header_;
   es_pub.publish(es_msg);
 
-  decomp_ros_msgs::Polyhedra poly_msg = polyhedra_to_ros(decomp_util.get_polyhedra());
+  decomp_ros_msgs::Polyhedra poly_msg = DecompROS::polyhedra_to_ros(decomp_util.get_polyhedra());
   poly_msg.header = header_;
   poly_pub.publish(poly_msg);
 

@@ -7,6 +7,7 @@
 #include <decomp_ros_msgs/Ellipsoids.h>
 #include <nav_msgs/Path.h>
 
+namespace DecompROS {
 inline vec_Vec3f path_to_eigen(const nav_msgs::Path &path) {
   vec_Vec3f vs;
   for (auto it : path.poses) {
@@ -119,6 +120,7 @@ inline decomp_ros_msgs::Ellipsoids ellipsoids_to_ros(const vec_Ellipsoid& Es) {
   }
 
   return ellipsoids;
+}
 }
 
 #endif
