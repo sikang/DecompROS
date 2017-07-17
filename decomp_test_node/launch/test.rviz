@@ -6,8 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /Ellipsoids1
-        - /Polyhedra1
       Splitter Ratio: 0.5
     Tree Height: 775
   - Class: rviz/Selection
@@ -28,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: PointCloud
 Visualization Manager:
   Class: ""
   Displays:
@@ -133,6 +131,36 @@ Visualization Manager:
       Value: true
       VsColor: 0; 255; 0
       VsScale: 1
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: Seed
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.100000001
+      Style: Flat Squares
+      Topic: /test_decomp/seed
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -171,10 +199,10 @@ Visualization Manager:
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.659797192
+      Pitch: 0.669797838
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.86044979
+      Yaw: 4.11045218
     Saved: ~
 Window Geometry:
   Displays:

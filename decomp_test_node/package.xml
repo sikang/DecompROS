@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>test_node</name>
+  <name>decomp_test_node</name>
   <version>0.0.1</version>
   <description>The test_node package</description>
   <maintainer email="sikang@todo.todo">sikang</maintainer>
