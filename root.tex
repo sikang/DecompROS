@@ -1,0 +1,123 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{bib/ieeeconf}
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+\IEEEoverridecommandlockouts                              % This command is only needed if
+                                                          % you want to use the \thanks command
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+
+%XXX: Packages
+\usepackage[normalem]{ulem}	                        % underlining!
+\usepackage[table,usenames,dvipsnames]{xcolor}      % color
+\usepackage{extarrows}                              % http://ctan.org/pkg
+\let\labelindent\relax
+\usepackage{enumitem}                               % [inline]
+% Math
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsmath,amsthm,amssymb,amsfonts,dsfont} % math
+\usepackage{algorithm,algorithmicx,listings}        % algorithms
+\usepackage[noend]{algpseudocode}			        % necessary for algorithmicx
+% Figures
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{multirow,multicol, array}
+\usepackage[font={small}]{caption}   %onehalfspacing
+\captionsetup[algorithm]{font=small}
+%\setlength{\belowcaptionskip}{-3.5pt}
+%\setlength{\abovecaptionskip}{2pt}
+%\usepackage{subcaption}
+%\usepackage[font={small}]{subcaption}
+\let\appendices\relax
+\usepackage[titletoc,title]{appendix}
+\usepackage[breaklinks=true, colorlinks, bookmarks=true, citecolor=Black, urlcolor=Violet,linkcolor=Black]{hyperref}
+
+% XXX: COMMANDS:
+\def\argmin{\mathop{\arg\min}\limits}	%
+\def\argmax{\mathop{\arg\max}\limits}	%
+\newcommand{\longeq}[2]{\xlongequal[\!#2\!]{\!#1\!}}
+% #1 = top; #2 = bottom; #3 = inequality (<,>,\leq,\geq)
+\newcommand{\longineq}[3]{\overset{#1}{\underset{#2}{#3}}}
+\newcommand{\indicator}{\mathds{1}}
+\newcommand{\ceil}[1]{\lceil#1\rceil}
+\newcommand{\floor}[1]{\lfloor#1\rfloor}
+\DeclareMathOperator{\tr}{tr}
+\newcommand{\TODO}[1]{{\color{red}#1}}
+\newcommand{\prl}[1]{\mathopen{}\left(#1\right)\mathclose{}}
+\newcommand{\brl}[1]{\mathopen{}\left[#1\right]\mathclose{}}
+\newcommand{\crl}[1]{\mathopen{}\left\{#1\right\}\mathclose{}}
+\newcommand{\scaleMathLine}[2][1]{\resizebox{#1\linewidth}{!}{$\displaystyle{#2}$}}
+\newcommand{\T}{\mathsf{T}}
+
+% XXX: ENVIRONMENTS:
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem*{assumption*}{Assumption}
+\newtheorem{remark}{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{problem*}{Problem}
+\newtheorem{problem}{Problem}
+\newtheorem{lemma}{Lemma}
+\addtolength{\textfloatsep}{-3mm}
+\addtolength{\intextsep}{-2mm}	   % reduce space between intext fig & text
+%\addtolength{\floatsep}{-1mm}		 % reduce the space between figures
+
+\title{\LARGE \bf
+Safe Guaranteed Motion Planning for Quadrotors\\ with Simultaneously Modeling and Exploring
+}
+\author{Sikang Liu, Nikolay Atanasov, Kartik Mohta, and Vijay Kumar% <-this % stops a space
+\thanks{This work is supported in part by ARL \# W911NF-08-2-0004, DARPA \# HR001151626/HR0011516850, ARO \# W911NF-13-1-0350, and ONR \# N00014-07-1-0829. The authors are with the GRASP Laboratory, University of Pennsylvania. Email: \texttt{\{sikang, atanasov, kmohta, kumar\}@seas.upenn.edu}}
+}
+% $^{1}$
+% \thanks{$^{1}$S. Liu, N. Atanasov, K. Mohta, and V. Kumar are with the GRASP Laboratory, University of Pennsylvania, USA }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+\begin{abstract}
+In traditional search-based planning approach, 
+
+\end{abstract}
+
+
+%\input{tex/Intro}
+%\input{tex/Problem}
+%\input{tex/LQMT}
+%\input{tex/DeterministicShortestPath}
+%\input{tex/Solution}
+
+%\input{tex/Trajectory}
+%\input{tex/Exp}
+%\input{tex/Conclusion}
+%\appendices
+%\input{tex/Appendix}
+%\input{tex/HeuristicNikolay}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\bibliographystyle{bib/IEEEtran}
+%\bibliography{bib/references}
+
+
+%\begin{thebibliography}{99}
+%\bibitem{mellinger2011} Mellinger, Daniel, and Vijay Kumar. "Minimum snap trajectory generation and control for quadrotors." Robotics and Automation (ICRA), 2011 IEEE International Conference on. IEEE, 2011.
+%\bibitem{mueller2015} Mueller, Mark W., Markus Hehn, and Raffaello D'Andrea. "A computationally efficient motion primitive for quadrocopter trajectory generation." IEEE Transactions on Robotics 31.6 (2015): 1294-1310.
+%\bibitem{bouktir2008} Bouktir, Y., M. Haddad, and T. Chettibi. "Trajectory planning for a quadrotor helicopter." Control and Automation, 2008 16th Mediterranean Conference on. Ieee, 2008.
+%\bibitem{Jamieson2016} J. Jamieson and J. Biggs, "Near minimum-time trajectories for quadrotor UAVs in complex environments," 2016 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Daejeon, 2016, pp. 1550-1555.
+%doi: 10.1109/IROS.2016.7759251
+%\bibitem{richter2013} Richter, Charles, Adam Bry, and Nicholas Roy. "Polynomial trajectory planning for aggressive quadrotor flight in dense indoor environments." Robotics Research. Springer International Publishing, 2016. 649-666.
+%\bibitem{sikang2016} Liu, Sikang, et al. "High speed navigation for quadrotors with limited onboard sensing." Robotics and Automation (ICRA), 2016 IEEE International Conference on. IEEE, 2016.
+%\bibitem{chen2016} Chen, Jing, Tianbo Liu, and Shaojie Shen. "Online generation of collision-free trajectories for quadrotor flight in unknown cluttered environments." Robotics and Automation (ICRA), 2016 IEEE International Conference on. IEEE, 2016.
+%\end{thebibliography}
+
+\end{document}
+
+
