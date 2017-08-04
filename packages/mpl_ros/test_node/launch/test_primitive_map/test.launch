@@ -30,7 +30,7 @@
     <param name="a_max" value="1.0"/>
     <param name="u_max" value="1.0"/>
     <param name="dt" value="1.0"/>
-    <param name="robot_r" value="0.5"/>
+    <param name="robot_r" value="1.0"/>
   </node>
 
 </launch>

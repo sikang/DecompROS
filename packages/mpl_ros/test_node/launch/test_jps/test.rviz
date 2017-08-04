@@ -6,8 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /Polyhedra1
-        - /Ellipsoids1
+        - /astar1
       Splitter Ratio: 0.5
     Tree Height: 775
   - Class: rviz/Selection
@@ -60,8 +59,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.100000001
-        Min Value: 0.100000001
+        Max Value: 5.8499999
+        Min Value: 0.0500000007
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -84,155 +83,33 @@ Visualization Manager:
       Size (m): 0.100000001
       State: Occupied
       Style: Boxes
-      Topic: /test_primitive/voxel_map
+      Topic: /test_jps/voxel_map
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud
-      Color: 116; 116; 116
-      Color Transformer: FlatColor
-      Decay Time: 0
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.100000001
-      Style: Flat Squares
-      Topic: /test_primitive/cloud
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: true
-    - AccColor: 10; 200; 55
-      AccScale: 0.0199999996
-      Class: planning_rviz_plugins/Trajectory
+    - Class: planning_rviz_plugins/Path
       Enabled: true
       History Length: 1
-      Name: Trajectory
-      Num of samples: 200
-      PosColor: 204; 51; 204
-      PosScale: 0.100000001
-      Topic: /test_primitive/trajectory
+      LineColor: 204; 51; 204
+      LineScale: 0.100000001
+      Name: jps2d
+      NodeColor: 85; 85; 255
+      NodeScale: 0.150000006
+      Topic: /test_jps/path1
       Unreliable: false
       Value: true
-      VelColor: 85; 85; 255
-      VelScale: 0.0199999996
-      Visualize Acc: true
-      Visualize Vel: true
-    - AccColor: 10; 200; 55
-      AccScale: 0.0199999996
-      Class: planning_rviz_plugins/Trajectory
-      Enabled: false
-      History Length: 1
-      Name: Trajectory_Refined
-      Num of samples: 200
-      PosColor: 255; 170; 0
-      PosScale: 0.100000001
-      Topic: /test_primitive/trajectory_refined
-      Unreliable: false
-      Value: false
-      VelColor: 85; 85; 255
-      VelScale: 0.0199999996
-      Visualize Acc: true
-      Visualize Vel: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 0.100000001
-        Min Value: 0.100000001
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud
-      Color: 255; 255; 255
-      Color Transformer: AxisColor
-      Decay Time: 0
+    - Class: planning_rviz_plugins/Path
       Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.400000006
-      Style: Spheres
-      Topic: /test_primitive/start_and_goal
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud
-      Color: 255; 255; 255
-      Color Transformer: RGB8
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.0500000007
-      Style: Flat Squares
-      Topic: /test_primitive/distance_cloud
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
-    - Alpha: 0.200000003
-      BoundColor: 255; 0; 0
-      Class: decomp_rviz_plugins/Polyhedra
-      Enabled: true
-      MeshColor: 0; 170; 255
-      Name: Polyhedra
-      Scale: 0.100000001
-      State: Mesh
-      Topic: /test_primitive/polyhedra
-      Unreliable: false
-      Value: true
-      VsColor: 0; 255; 0
-      VsScale: 1
-    - Alpha: 0.5
-      Class: decomp_rviz_plugins/Ellipsoids
-      Color: 204; 51; 204
-      Enabled: false
       History Length: 1
-      Name: Ellipsoids
-      Topic: /test_primitive/ellipsoids
+      LineColor: 204; 51; 204
+      LineScale: 0.100000001
+      Name: astar
+      NodeColor: 85; 85; 255
+      NodeScale: 0.150000006
+      Topic: /test_jps/path2
       Unreliable: false
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 255; 255; 255
@@ -256,20 +133,25 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0
-      Class: rviz/TopDownOrtho
+      Class: rviz/XYOrbit
+      Distance: 15.7351933
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
+      Focal Point:
+        X: 3.42193651
+        Y: 3.31769323
+        Z: 1.90734863e-06
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Scale: 49.4869232
+      Pitch: 1.26039732
       Target Frame: <Fixed Frame>
-      Value: TopDownOrtho (rviz)
-      X: 9
-      Y: 8.80000019
+      Value: XYOrbit (rviz)
+      Yaw: 3.79040861
     Saved: ~
 Window Geometry:
   Displays:
@@ -287,5 +169,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 0
+  X: 2560
   Y: 24

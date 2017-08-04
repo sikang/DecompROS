@@ -52,6 +52,7 @@ int main(int argc, char ** argv){
   ros::Publisher sg_pub = nh.advertise<sensor_msgs::PointCloud>("start_and_goal", 1, true);
   ros::Publisher traj_pub1 = nh.advertise<planning_ros_msgs::Trajectory>("trajectory", 1, true);
   ros::Publisher traj_pub2 = nh.advertise<planning_ros_msgs::Trajectory>("trajectory_refined", 1, true);
+  ros::Publisher trajs_pub = nh.advertise<planning_ros_msgs::Trajectories>("trajectories", 1, true);
   traj_pub_.push_back(traj_pub1);
   traj_pub_.push_back(traj_pub2);
 
@@ -171,6 +172,17 @@ int main(int argc, char ** argv){
   }
 
   ROS_INFO("Takse %f sec to plan!", (ros::Time::now() - t0).toSec());
+
+  std::vector<Trajectory> trajs;
+  for(const auto& it: planner_->getPrimitives()) {
+    std::vector<Primitive> ps;
+    ps.push_back(it);
+    Trajectory traj(ps);
+    trajs.push_back(traj);
+  }
+  planning_ros_msgs::Trajectories trajs_msg = toTrajectoriesROSMsg(trajs);
+  trajs_msg.header = header_;
+  trajs_pub.publish(trajs_msg);
 
 
   decomp_ros_msgs::Polyhedra poly_msg = DecompROS::polyhedra_to_ros(planner_->getPolyhedra());

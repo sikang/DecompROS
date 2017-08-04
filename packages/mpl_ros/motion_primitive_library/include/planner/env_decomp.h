@@ -107,6 +107,7 @@ class env_decomp : public env_base
             }
           }
           if(valid) {
+            primitives_.push_back(pr);
             tn.use_pos = curr.use_pos;
             tn.use_vel = curr.use_vel;
             tn.use_acc = curr.use_acc;

@@ -15,5 +15,6 @@
   <depend>decomp_ros_utils</depend>
   <depend>planning_ros_msgs</depend>
   <depend>planning_ros_utils</depend>
+  <!-- <depend>jps3d</depend>-->
 
 </package>

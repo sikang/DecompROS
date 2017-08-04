@@ -15,7 +15,6 @@ void MPDecompUtil::setMap(const vec_Vec3f& obs, decimal_t r) {
 
 bool MPDecompUtil::plan(const Waypoint &start, const Waypoint &goal) {
   path_.clear();
-  //primitives_.clear();
 
   if(planner_verbose_) {
     printf("start pos: [%f, %f, %f], vel: [%f, %f, %f], acc: [%f, %f, %f]\n",
