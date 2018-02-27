@@ -44,4 +44,4 @@ target_link_libraries(decomp_rviz_plugins ${QT_LIBRARIES} ${catkin_LIBRARIES} ${
 
 cs_install()
 
-cs_export()
+cs_export(DEPENDS DECOMP_UTIL)
