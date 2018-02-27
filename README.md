@@ -1,5 +1,6 @@
-MRSL Decomp Util ROS
-===============
+# MRSL Decomp Util ROS
+[![wercker status](https://app.wercker.com/status/d7ea0616ed5e23113099e84ec4289f6b/s/master "wercker status")](https://app.wercker.com/project/byKey/d7ea0616ed5e23113099e84ec4289f6b)
+- - -
 A ROS wrapper for implementing [`DecompUtil`](https://github.com/sikang/DecompUtil.git), stacks include:
   - `DecompUtil`: convex decomposition of free space in a cluttered environment
   - `decomp_ros_msgs`: ROS msgs used in storing, visualizing and communicating
@@ -11,6 +12,12 @@ A ROS wrapper for implementing [`DecompUtil`](https://github.com/sikang/DecompUt
   - `ROS`(Indigo+)
   - [`catkin_simple`](https://github.com/catkin/catkin_simple)
   - `QT`(4+)
+
+If the submodule `DecompUtil` is not initialized yet, run following commands at first:
+```sh
+$ cd /PATH/TO/DecompROS
+$ git submodule update --init
+```
 
 #### 1) Using Catkin:
 ```sh
