@@ -7,17 +7,17 @@ A ROS wrapper for implementing [`DecompUtil`](https://github.com/sikang/DecompUt
   - `test_node`: examples
 
 ## Compilation
-Prerequisite:
+#### Prerequisite:
   - `ROS`(Indigo+)
   - [`catkin_simple`](https://github.com/catkin/catkin_simple)
   - `QT`(4+)
 
-Using Catkin:
+#### 1) Using Catkin:
 ```sh
 $ mv decomp_ros ~/catkin_ws/src
-$ cd ~/catkin_ws & catkin_make -DCMAKE_BUILD_TYPE=Release
+$ cd ~/catkin_ws & catkin_make_isolated -DCMAKE_BUILD_TYPE=Release
 ```
-Using Catkin Tools:
+#### 2) Using Catkin Tools (Recommended):
 ```sh
 $ mv decomp_ros ~/catkin_ws/src
 $ catkin config -DCMAKE_BUILD_TYPE=Release
@@ -29,7 +29,7 @@ Simple test using the built-in data can be applied through following commands:
 ```sh
 $ roscd test_node/launch
 $ roslaunch rviz.launch
-$ roslaunch test_decomp.launch
+$ roslaunch test_path_decomp.launch
 ```
 
 The input point cloud, path and output Safe Flight Corridor after decomposition are visualized in Rviz as:
