@@ -6,7 +6,8 @@ find_package(catkin REQUIRED COMPONENTS rviz roscpp)
 find_package(catkin_simple REQUIRED)
 find_package(cmake_modules)
 find_package(Eigen3 REQUIRED)
-include_directories(${EIGEN3_INCLUDE_DIRS} include)
+find_package(decomp_util REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIRS} ${DECOMP_UTIL_INCLUDE_DIRS} include)
 
 add_definitions(-DQT_NO_KEYWORDS)
 
@@ -30,12 +31,12 @@ catkin_simple()
 
 set(SOURCE_FILES
   src/ellipsoids_visual.cpp
-  src/ellipsoids_display.cpp
-  src/geometry_utils.cpp
   src/bound_visual.cpp
   src/mesh_visual.cpp
   src/vector_visual.cpp
+  src/ellipsoids_display.cpp
   src/polyhedra_display.cpp
+  src/geometry_utils.cpp
   ${MOC_FILES})
 
 cs_add_library(decomp_rviz_plugins ${SOURCE_FILES})
