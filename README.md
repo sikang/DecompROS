@@ -41,6 +41,6 @@ $ roslaunch test_path_decomp.launch
 
 The input point cloud, path and output Safe Flight Corridor after decomposition are visualized in Rviz as:
 
-<img src="./decomp_test_node/samples/sample1.png" width="256"> <img src="./decomp_test_node/samples/sample2.png" width="256">
+<img src="./DecompUtil/samples/sample1.png" width="256"> <img src="./DecompUtil/samples/sample2.png" width="256">
 
 Note there are several params and modes you can choose to do the decomposition, the results vary according to different set up.
