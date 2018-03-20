@@ -21,6 +21,7 @@ EllipsoidsDisplay::~EllipsoidsDisplay() {}
 
 void EllipsoidsDisplay::reset() {
   MFDClass::reset();
+  visual_ = nullptr;
 }
 
 void EllipsoidsDisplay::updateColorAndAlpha() {
