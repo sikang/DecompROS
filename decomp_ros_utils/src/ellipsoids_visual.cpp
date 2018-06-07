@@ -17,6 +17,17 @@ namespace decomp_rviz_plugins {
     if (msg->ellipsoids.empty())
       return;
 
+    for (const auto& it: msg->ellipsoids) {
+      if(std::isnan(it.d[0]) ||
+         std::isnan(it.d[1]) ||
+         std::isnan(it.d[2]))
+        return;
+      for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+          if(std::isnan(it.E[3 * i + j]))
+            return;
+    }
+
     objs_.resize(msg->ellipsoids.size());
 
     for (auto &it : objs_)
