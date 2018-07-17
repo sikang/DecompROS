@@ -1,17 +1,17 @@
-#include "ellipsoids_visual.h"
+#include "ellipsoid_array_visual.h"
 
 namespace decomp_rviz_plugins {
-  EllipsoidsVisual::EllipsoidsVisual(Ogre::SceneManager *scene_manager,
+  EllipsoidArrayVisual::EllipsoidArrayVisual(Ogre::SceneManager *scene_manager,
                                      Ogre::SceneNode *parent_node) {
     scene_manager_ = scene_manager;
     frame_node_ = parent_node->createChildSceneNode();
   }
 
-  EllipsoidsVisual::~EllipsoidsVisual() {
+  EllipsoidArrayVisual::~EllipsoidArrayVisual() {
     scene_manager_->destroySceneNode(frame_node_);
   }
 
-  void EllipsoidsVisual::setMessage(const decomp_ros_msgs::Ellipsoids::ConstPtr &msg) {
+  void EllipsoidArrayVisual::setMessage(const decomp_ros_msgs::EllipsoidArray::ConstPtr &msg) {
     objs_.clear();
 
     if (msg->ellipsoids.empty())
@@ -56,16 +56,16 @@ namespace decomp_rviz_plugins {
     }
   }
 
-  void EllipsoidsVisual::setFramePosition(const Ogre::Vector3 &position) {
+  void EllipsoidArrayVisual::setFramePosition(const Ogre::Vector3 &position) {
     frame_node_->setPosition(position);
   }
 
-  void EllipsoidsVisual::setFrameOrientation(
+  void EllipsoidArrayVisual::setFrameOrientation(
                                              const Ogre::Quaternion &orientation) {
     frame_node_->setOrientation(orientation);
   }
 
-  void EllipsoidsVisual::setColor(float r, float g, float b, float a) {
+  void EllipsoidArrayVisual::setColor(float r, float g, float b, float a) {
     for (auto &it : objs_)
       it->setColor(r, g, b, a);
   }

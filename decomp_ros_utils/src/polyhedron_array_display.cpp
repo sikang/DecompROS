@@ -1,8 +1,8 @@
-#include "polyhedra_display.h"
+#include "polyhedron_array_display.h"
 
 namespace decomp_rviz_plugins {
 
-PolyhedraDisplay::PolyhedraDisplay() {
+PolyhedronArrayDisplay::PolyhedronArrayDisplay() {
   mesh_color_property_ =
       new rviz::ColorProperty("MeshColor", QColor(0, 170, 255), "Mesh color.",
                               this, SLOT(updateMeshColorAndAlpha()));
@@ -39,18 +39,18 @@ PolyhedraDisplay::PolyhedraDisplay() {
 
 }
 
-void PolyhedraDisplay::onInitialize() { MFDClass::onInitialize(); }
+void PolyhedronArrayDisplay::onInitialize() { MFDClass::onInitialize(); }
 
-PolyhedraDisplay::~PolyhedraDisplay() {}
+PolyhedronArrayDisplay::~PolyhedronArrayDisplay() {}
 
-void PolyhedraDisplay::reset() {
+void PolyhedronArrayDisplay::reset() {
   MFDClass::reset();
   visual_mesh_ = nullptr;
   visual_bound_ = nullptr;
   visual_vector_ = nullptr;
 }
 
-void PolyhedraDisplay::processMessage(const decomp_ros_msgs::Polyhedra::ConstPtr &msg) {
+void PolyhedronArrayDisplay::processMessage(const decomp_ros_msgs::PolyhedronArray::ConstPtr &msg) {
   if (!context_->getFrameManager()->getTransform(
           msg->header.frame_id, msg->header.stamp, position_, orientation_)) {
     ROS_DEBUG("Error transforming from frame '%s' to frame '%s'",
@@ -59,38 +59,26 @@ void PolyhedraDisplay::processMessage(const decomp_ros_msgs::Polyhedra::ConstPtr
   }
 
   vertices_.clear();
-  passes_.clear();
   vs_.clear();
 
-  for(const auto& polyhedron: msg->polyhedra){
-    Polyhedron p;
-    for(unsigned int i = 0; i < polyhedron.points.size(); i++){
-      Vec3f pt(polyhedron.points[i].x,
-               polyhedron.points[i].y,
-               polyhedron.points[i].z);
-      Vec3f n(polyhedron.normals[i].x,
-              polyhedron.normals[i].y,
-              polyhedron.normals[i].z);
-      vs_.push_back(std::make_pair(pt, n));
-      if(polyhedron.passes.empty())
-        p.push_back(Face(pt, n));
-      else
-        p.push_back(Face(pt, n, polyhedron.passes[i]));
-    }
-    std::pair<BoundVec3f, std::vector<bool>> bds = cal_extreme_points(p);
-    vertices_.insert(vertices_.end(), bds.first.begin(), bds.first.end());
-    passes_.insert(passes_.end(), bds.second.begin(), bds.second.end());
+  const auto polys = DecompROS::ros_to_polyhedron_array(*msg);
+
+  for(const auto& polyhedron: polys){
+    vec_E<vec_Vec3f> bds = cal_vertices(polyhedron);
+    vertices_.insert(vertices_.end(), bds.begin(), bds.end());
+    const vs = polyhedron.cal_normals();
+    vs_.insert(vs_.end(), vs.begin(), vs.end());
   }
 
   int state = state_property_->getOptionInt();
   visualizeMessage(state);
 }
 
-void PolyhedraDisplay::visualizeMesh() {
+void PolyhedronArrayDisplay::visualizeMesh() {
   std::shared_ptr<MeshVisual> visual_mesh;
   visual_mesh.reset(new MeshVisual(context_->getSceneManager(), scene_node_));
- 
-  visual_mesh->setMessage(vertices_, passes_);
+
+  visual_mesh->setMessage(vertices_);
   visual_mesh->setFramePosition(position_);
   visual_mesh->setFrameOrientation(orientation_);
 
@@ -100,7 +88,7 @@ void PolyhedraDisplay::visualizeMesh() {
   visual_mesh_ = visual_mesh;
 }
 
-void PolyhedraDisplay::visualizeBound() {
+void PolyhedronArrayDisplay::visualizeBound() {
   std::shared_ptr<BoundVisual> visual_bound;
   visual_bound.reset(new BoundVisual(context_->getSceneManager(), scene_node_));
 
@@ -116,7 +104,7 @@ void PolyhedraDisplay::visualizeBound() {
   visual_bound_ = visual_bound;
 }
 
-void PolyhedraDisplay::visualizeVs() {
+void PolyhedronArrayDisplay::visualizeVs() {
   std::shared_ptr<VectorVisual> visual_vector;
   visual_vector.reset(new VectorVisual(context_->getSceneManager(), scene_node_));
 
@@ -130,7 +118,7 @@ void PolyhedraDisplay::visualizeVs() {
   visual_vector_ = visual_vector;
 }
 
-void PolyhedraDisplay::visualizeMessage(int state) {
+void PolyhedronArrayDisplay::visualizeMessage(int state) {
   switch (state) {
   case 0:
     visual_bound_ = nullptr;
@@ -155,7 +143,7 @@ void PolyhedraDisplay::visualizeMessage(int state) {
   }
 }
 
-void PolyhedraDisplay::updateMeshColorAndAlpha() {
+void PolyhedronArrayDisplay::updateMeshColorAndAlpha() {
   float alpha = alpha_property_->getFloat();
   Ogre::ColourValue color = mesh_color_property_->getOgreColor();
 
@@ -163,31 +151,31 @@ void PolyhedraDisplay::updateMeshColorAndAlpha() {
     visual_mesh_->setColor(color.r, color.g, color.b, alpha);
 }
 
-void PolyhedraDisplay::updateBoundColorAndAlpha() {
+void PolyhedronArrayDisplay::updateBoundColorAndAlpha() {
   Ogre::ColourValue color = bound_color_property_->getOgreColor();
   if(visual_bound_)
     visual_bound_->setColor(color.r, color.g, color.b, 1.0);
 }
 
 
-void PolyhedraDisplay::updateState() {
+void PolyhedronArrayDisplay::updateState() {
   int state = state_property_->getOptionInt();
   visualizeMessage(state);
 }
 
-void PolyhedraDisplay::updateScale() {
+void PolyhedronArrayDisplay::updateScale() {
   float s = scale_property_->getFloat();
   if(visual_bound_)
     visual_bound_->setScale(s);
 }
 
-void PolyhedraDisplay::updateVsScale() {
+void PolyhedronArrayDisplay::updateVsScale() {
   float s = vs_scale_property_->getFloat();
   if(visual_vector_)
     visual_vector_->setScale(s);
 }
 
-void PolyhedraDisplay::updateVsColorAndAlpha() {
+void PolyhedronArrayDisplay::updateVsColorAndAlpha() {
   Ogre::ColourValue color = vs_color_property_->getOgreColor();
   if(visual_vector_)
     visual_vector_->setColor(color.r, color.g, color.b, 1);
@@ -195,4 +183,4 @@ void PolyhedraDisplay::updateVsColorAndAlpha() {
 }
 
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(decomp_rviz_plugins::PolyhedraDisplay, rviz::Display)
+PLUGINLIB_EXPORT_CLASS(decomp_rviz_plugins::PolyhedronArrayDisplay, rviz::Display)

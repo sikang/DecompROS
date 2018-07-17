@@ -1,10 +1,11 @@
 #ifndef DECOMP_ROS_UTILS_H
 #define DECOMP_ROS_UTILS_H
 
-#include <decomp_util/data_type.h>
+#include <decomp_geometry/ellipsoid.h>
+#include <decomp_geometry/polyhedron.h>
 #include <sensor_msgs/PointCloud.h>
-#include <decomp_ros_msgs/Polyhedra.h>
-#include <decomp_ros_msgs/Ellipsoids.h>
+#include <decomp_ros_msgs/PolyhedronArray.h>
+#include <decomp_ros_msgs/EllipsoidArray.h>
 #include <nav_msgs/Path.h>
 
 namespace DecompROS {
@@ -62,60 +63,85 @@ inline vec_Vec3f cloud_to_vec(const sensor_msgs::PointCloud &cloud) {
   return pts;
 }
 
-inline Polyhedra ros_to_polyhedra(const decomp_ros_msgs::Polyhedra& msg){
-  Polyhedra polys;
-  for(const auto& polyhedron: msg.polyhedra){
-    Polyhedron p;
-    for(unsigned int i = 0; i < polyhedron.points.size(); i++){
-      Vec3f pt(polyhedron.points[i].x,
-               polyhedron.points[i].y,
-               polyhedron.points[i].z);
-      Vec3f n(polyhedron.normals[i].x,
-              polyhedron.normals[i].y,
-              polyhedron.normals[i].z);
-      if(polyhedron.passes.empty())
-        p.push_back(Face(pt, n));
-      else
-        p.push_back(Face(pt, n, polyhedron.passes[i]));
-    }
-    polys.push_back(p);
+inline Polyhedron3D ros_to_polyhedron(const decomp_ros_msgs::Polyhedron& msg){
+  Polyhedron3D poly;
+  for(unsigned int i = 0; i < msg.points.size(); i++){
+    Vec3f pt(msg.points[i].x,
+             msg.points[i].y,
+             msg.points[i].z);
+    Vec3f n(msg.normals[i].x,
+            msg.normals[i].y,
+            msg.normals[i].z);
+    poly.add(Hyperplane3D(pt, n));
   }
-  return polys;
-}
-
-inline decomp_ros_msgs::Polyhedra polyhedra_to_ros(const Polyhedra& vs){
-  decomp_ros_msgs::Polyhedra poly;
-  for (const auto &v : vs) {
-    decomp_ros_msgs::Polyhedron f;
-    for (const auto &p : v) {
-      geometry_msgs::Point pt, n;
-      pt.x = p.p(0);
-      pt.y = p.p(1);
-      pt.z = p.p(2);
-      n.x = p.n(0);
-      n.y = p.n(1);
-      n.z = p.n(2);
-      f.points.push_back(pt);
-      f.normals.push_back(n);
-      f.passes.push_back(p.pass);
-    }
-    poly.polyhedra.push_back(f);
-  }
-
   return poly;
 }
 
-inline decomp_ros_msgs::Ellipsoids ellipsoids_to_ros(const vec_Ellipsoid& Es) {
-  decomp_ros_msgs::Ellipsoids ellipsoids;
+inline vec_E<Polyhedron3D> ros_to_polyhedron_array(const decomp_ros_msgs::PolyhedronArray& msg) {
+  vec_E<Polyhedron3D> polys(msg.polyhedrons.size());
+
+  for(size_t i = 0; i < msg.polyhedrons.size(); i++)
+    polys[i] = ros_to_polyhedron(msg.polyhedrons[i]);
+
+  return polys;
+}
+
+inline decomp_ros_msgs::Polyhedron polyhedron_to_ros(const Polyhedron2D& poly){
+  decomp_ros_msgs::Polyhedron msg;
+  for (const auto &p : poly.hyperplanes()) {
+    geometry_msgs::Point pt, n;
+    pt.x = p.p_(0);
+    pt.y = p.p_(1);
+    pt.z = 0;
+    n.x = p.n_(0);
+    n.y = p.n_(1);
+    n.z = 0;
+    msg.points.push_back(pt);
+    msg.normals.push_back(n);
+  }
+
+  return msg;
+}
+
+inline decomp_ros_msgs::Polyhedron polyhedron_to_ros(const Polyhedron3D& poly){
+  decomp_ros_msgs::Polyhedron msg;
+  for (const auto &p : poly.hyperplanes()) {
+    geometry_msgs::Point pt, n;
+    pt.x = p.p_(0);
+    pt.y = p.p_(1);
+    pt.z = p.p_(2);
+    n.x = p.n_(0);
+    n.y = p.n_(1);
+    n.z = p.n_(2);
+    msg.points.push_back(pt);
+    msg.normals.push_back(n);
+  }
+
+  return msg;
+}
+
+
+template <int Dim>
+decomp_ros_msgs::PolyhedronArray polyhedron_array_to_ros(const vec_E<Polyhedron<Dim>>& vs){
+  decomp_ros_msgs::PolyhedronArray msg;
+  for (const auto &v : vs)
+    msg.polyhedrons.push_back(polyhedron_to_ros(v));
+  return msg;
+}
+
+inline decomp_ros_msgs::EllipsoidArray ellipsoid_array_to_ros(const vec_E<Ellipsoid3D>& Es) {
+  decomp_ros_msgs::EllipsoidArray ellipsoids;
   for (unsigned int i = 0; i < Es.size(); i++) {
     decomp_ros_msgs::Ellipsoid ellipsoid;
-    ellipsoid.d[0] = Es[i].second(0);
-    ellipsoid.d[1] = Es[i].second(1);
-    ellipsoid.d[2] = Es[i].second(2);
+    auto d = Es[i].d();
+    ellipsoid.d[0] = d(0);
+    ellipsoid.d[1] = d(1);
+    ellipsoid.d[2] = d(2);
 
+    auto C = Es[i].C();
     for (int x = 0; x < 3; x++)
       for (int y = 0; y < 3; y++)
-        ellipsoid.E[3 * x + y] = Es[i].first(x, y);
+        ellipsoid.E[3 * x + y] = C(x, y);
     ellipsoids.ellipsoids.push_back(ellipsoid);
   }
 

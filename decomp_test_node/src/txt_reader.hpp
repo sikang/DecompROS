@@ -22,14 +22,14 @@ bool read_path(std::string file_name, vec_Vec3f& path) {
       std::vector<std::string> tokens(beg, end);
 
       if(tokens.size() != 3) {
-	std::cout << "Invalid format!" << std::endl;
-	std::cout << line << '\n';
-	return false;
+        std::cout << "Invalid format!" << std::endl;
+        std::cout << line << '\n';
+        return false;
       }
 
       ///Extract the digit value
-      path.push_back(Vec3f(atof(tokens[0].c_str()), 
-	    atof(tokens[1].c_str()), atof(tokens[2].c_str())));
+      path.push_back(Vec3f(atof(tokens[0].c_str()),
+                           atof(tokens[1].c_str()), atof(tokens[2].c_str())));
     }
     myfile.close();
   }

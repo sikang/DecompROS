@@ -1,4 +1,4 @@
-#include <decomp_ros_msgs/Polyhedra.h>
+#include <decomp_ros_msgs/PolyhedronArray.h>
 #include <rviz/message_filter_display.h>
 
 #include <rviz/properties/color_property.h>
@@ -12,18 +12,18 @@
 
 #include <rviz/load_resource.h>
 
-#include "geometry_utils.h"
 #include "mesh_visual.h"
 #include "bound_visual.h"
 #include "vector_visual.h"
+#include <decomp_ros_utils/data_ros_utils.h>
 
 namespace decomp_rviz_plugins {
-class PolyhedraDisplay
-    : public rviz::MessageFilterDisplay<decomp_ros_msgs::Polyhedra> {
+class PolyhedronArrayDisplay
+    : public rviz::MessageFilterDisplay<decomp_ros_msgs::PolyhedronArray> {
   Q_OBJECT
 public:
-  PolyhedraDisplay();
-  virtual ~PolyhedraDisplay();
+  PolyhedronArrayDisplay();
+  virtual ~PolyhedronArrayDisplay();
 
 protected:
   virtual void onInitialize();
@@ -39,7 +39,7 @@ private Q_SLOTS:
   void updateVsScale();
 
 private:
-  void processMessage(const decomp_ros_msgs::Polyhedra::ConstPtr &msg);
+  void processMessage(const decomp_ros_msgs::PolyhedronArray::ConstPtr &msg);
   void visualizeMessage(int state);
   void visualizeMesh();
   void visualizeBound();
@@ -60,9 +60,8 @@ private:
   Ogre::Vector3 position_;
   Ogre::Quaternion orientation_;
 
-  BoundVec3f vertices_;
-  std::vector<bool> passes_;
+  vec_E<vec_Vec3f> vertices_;
   vec_E<std::pair<Vec3f, Vec3f>> vs_;
 };
 
-} 
+}
