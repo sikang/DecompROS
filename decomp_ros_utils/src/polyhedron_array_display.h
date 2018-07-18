@@ -16,6 +16,7 @@
 #include "bound_visual.h"
 #include "vector_visual.h"
 #include <decomp_ros_utils/data_ros_utils.h>
+#include <decomp_geometry/geometric_utils.h>
 
 namespace decomp_rviz_plugins {
 class PolyhedronArrayDisplay

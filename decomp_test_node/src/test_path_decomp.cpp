@@ -2,7 +2,7 @@
 #include "txt_reader.hpp"
 #include <decomp_ros_utils/data_ros_utils.h>
 #include <ros/ros.h>
-#include <decomp_util/iterative_decomp.h>
+#include <decomp_util/ellipsoid_decomp.h>
 #include <sensor_msgs/point_cloud_conversion.h>
 #include <nav_msgs/Path.h>
 
@@ -13,8 +13,8 @@ int main(int argc, char ** argv){
 
   ros::Publisher cloud_pub = nh.advertise<sensor_msgs::PointCloud>("cloud", 1, true);
   ros::Publisher path_pub = nh.advertise<nav_msgs::Path>("path", 1, true);
-  ros::Publisher es_pub = nh.advertise<decomp_ros_msgs::Ellipsoids>("ellipsoids", 1, true);
-  ros::Publisher poly_pub = nh.advertise<decomp_ros_msgs::Polyhedra>("polyhedra", 1, true);
+  ros::Publisher es_pub = nh.advertise<decomp_ros_msgs::EllipsoidArray>("ellipsoid_array", 1, true);
+  ros::Publisher poly_pub = nh.advertise<decomp_ros_msgs::PolyhedronArray>("polyhedron_array", 1, true);
 
   std::string file_name, topic_name, path_file;
 
@@ -27,32 +27,31 @@ int main(int argc, char ** argv){
   cloud_pub.publish(cloud);
 
   vec_Vec3f obs = DecompROS::cloud_to_vec(cloud);
+  vec_Vec2f obs2d;
+  for(const auto& it: obs)
+    obs2d.push_back(it.topRows<2>());
 
   //Read path from txt
-  vec_Vec3f path;
-  if(!read_path(path_file, path))
+  vec_Vec2f path;
+  if(!read_path<2>(path_file, path))
     ROS_ERROR("Fail to read a path!");
 
-  //Downsample the path as many line segments with lenght equal to 1.0
-  path = path_downsample(path, 1.0);
-
-  nav_msgs::Path path_msg = DecompROS::eigen_to_path(path);
+  nav_msgs::Path path_msg = DecompROS::vec_to_path(path);
   path_msg.header.frame_id = "map";
   path_pub.publish(path_msg);
 
-  //Using iterative decomposition
-  //EllipseDecomp decomp_util(true);
-  IterativeDecomp decomp_util(true);
-  decomp_util.set_obstacles(obs);
-  //decomp_util.decomp(path);
-  decomp_util.decomp_iter(path, 2, 2.0); //Set max iteration number of 10, do fix the path
+  //Using ellipsoid decomposition
+  EllipsoidDecomp2D decomp_util;
+  decomp_util.set_obs(obs2d);
+  decomp_util.set_local_bbox(Vec2f(1, 2));
+  decomp_util.dilate(path); //Set max iteration number of 10, do fix the path
 
   //Publish visualization msgs
-  decomp_ros_msgs::Ellipsoids es_msg = DecompROS::ellipsoids_to_ros(decomp_util.get_ellipsoids());
+  decomp_ros_msgs::EllipsoidArray es_msg = DecompROS::ellipsoid_array_to_ros(decomp_util.get_ellipsoids());
   es_msg.header.frame_id = "map";
   es_pub.publish(es_msg);
 
-  decomp_ros_msgs::Polyhedra poly_msg = DecompROS::polyhedra_to_ros(decomp_util.get_polyhedra());
+  decomp_ros_msgs::PolyhedronArray poly_msg = DecompROS::polyhedron_array_to_ros(decomp_util.get_polyhedrons());
   poly_msg.header.frame_id = "map";
   poly_pub.publish(poly_msg);
 

@@ -66,7 +66,7 @@ void PolyhedronArrayDisplay::processMessage(const decomp_ros_msgs::PolyhedronArr
   for(const auto& polyhedron: polys){
     vec_E<vec_Vec3f> bds = cal_vertices(polyhedron);
     vertices_.insert(vertices_.end(), bds.begin(), bds.end());
-    const vs = polyhedron.cal_normals();
+    const auto vs = polyhedron.cal_normals();
     vs_.insert(vs_.end(), vs.begin(), vs.end());
   }
 
@@ -122,20 +122,20 @@ void PolyhedronArrayDisplay::visualizeMessage(int state) {
   switch (state) {
   case 0:
     visual_bound_ = nullptr;
+    visual_vector_ = nullptr;
     visualizeMesh();
     break;
   case 1:
     visual_mesh_ = nullptr;
+    visual_vector_ = nullptr;
     visualizeBound();
     break;
   case 2:
+    visual_vector_ = nullptr;
     visualizeMesh();
     visualizeBound();
     break;
   case 3:
-    visual_vector_ = nullptr;
-    visualizeMesh();
-    visualizeBound();
     visualizeVs();
     break;
   default:
