@@ -27,13 +27,10 @@ int main(int argc, char ** argv){
   cloud_pub.publish(cloud);
 
   vec_Vec3f obs = DecompROS::cloud_to_vec(cloud);
-  vec_Vec2f obs2d;
-  for(const auto& it: obs)
-    obs2d.push_back(it.topRows<2>());
 
   //Read path from txt
-  vec_Vec2f path;
-  if(!read_path<2>(path_file, path))
+  vec_Vec3f path;
+  if(!read_path<3>(path_file, path))
     ROS_ERROR("Fail to read a path!");
 
   nav_msgs::Path path_msg = DecompROS::vec_to_path(path);
@@ -41,9 +38,9 @@ int main(int argc, char ** argv){
   path_pub.publish(path_msg);
 
   //Using ellipsoid decomposition
-  EllipsoidDecomp2D decomp_util;
-  decomp_util.set_obs(obs2d);
-  decomp_util.set_local_bbox(Vec2f(1, 2));
+  EllipsoidDecomp3D decomp_util;
+  decomp_util.set_obs(obs);
+  decomp_util.set_local_bbox(Vec3f(1, 2, 1));
   decomp_util.dilate(path); //Set max iteration number of 10, do fix the path
 
   //Publish visualization msgs
@@ -55,18 +52,26 @@ int main(int argc, char ** argv){
   poly_msg.header.frame_id = "map";
   poly_pub.publish(poly_msg);
 
+    //Convert to inequality constraints Ax < b
+  auto polys = decomp_util.get_polyhedrons();
+  for(size_t i = 0; i < path.size() - 1; i++) {
+    const auto pt_inside = (path[i] + path[i+1]) / 2;
+    LinearConstraint3D cs(pt_inside, polys[i].hyperplanes());
+    printf("i: %zu\n", i);
+    std::cout << "A: " << cs.A() << std::endl;
+    std::cout << "b: " << cs.b() << std::endl;
+    std::cout << "point: " << path[i].transpose();
+    if(cs.inside(path[i]))
+      std::cout << " is inside!" << std::endl;
+    else
+      std::cout << " is outside!" << std::endl;
 
-  /*
-  vec_LinearConstraint3f cs = decomp_util.get_constraints();
-  for(int i = 0; i < cs.size(); i++) {
-    MatD3f A = cs[i].first;
-    VecDf b = cs[i].second;
-
-    printf("i: %d\n", i);
-    std::cout << "start: " << (A*path[i]-b).transpose() << std::endl;
-    std::cout << "end: " << (A*path[i+1]-b).transpose() << std::endl;
+    std::cout << "point: " << path[i+1].transpose();
+    if(cs.inside(path[i+1]))
+      std::cout << " is inside!" << std::endl;
+    else
+      std::cout << " is outside!" << std::endl;
   }
-  */
 
 
   ros::spin();
